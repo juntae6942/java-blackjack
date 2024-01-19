@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DealerDto {
-    int score;
-    List<Card> cards;
+    private final List<Card> cards;
+    private final int score;
 
     public int getScore() {
         return score;
@@ -24,6 +24,10 @@ public class DealerDto {
     public DealerDto(int score, List<Card> cards) {
         this.cards = cards;
         this.score = score;
+    }
+
+    public String firstCardInfo() {
+        return "딜러: "+cards.get(0).toString();
     }
 
     @Override

@@ -7,10 +7,9 @@ import java.util.List;
 public class Player {
 
     private static final int CHANGE_LIMIT = 11;
-    String name;
-
-    int score;
-    List<Card> cards;
+    private final String name;
+    private final List<Card> cards;
+    private int score;
 
     public Player(String name) {
         this.name = name;
@@ -18,7 +17,7 @@ public class Player {
         score = 0;
     }
 
-    public PlayerDto returnPlayer() {
+    public PlayerDto returnPlayerDto() {
         return new PlayerDto(score, name, cards);
     }
 
@@ -28,25 +27,31 @@ public class Player {
     }
 
     public boolean nameEqual(PlayerDto playerDto) {
-        return name.equals(playerDto.getName());
+        String playerName = playerDto.getName();
+        return name.equals(playerName);
     }
-
 
     public boolean containsAce() {
         return cards.contains(new Card(CardSymbol.SPADE,1));
     }
+
     public boolean aceIsCanChange() {
         return score<=CHANGE_LIMIT;
     }
 
-    public void changeCard() {
+    public void changeAceCard() {
         for (Card card : cards) {
-            if(card.isAce()) {
-                card.changeNum();
-                score+=10;
-            }
+            checkAndChangeCard(card);
         }
     }
+
+    private void checkAndChangeCard(Card card) {
+        if(card.isAce()) {
+            card.changeAceNumber();
+            score+=10;
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder(name+": ");

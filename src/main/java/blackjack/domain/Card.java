@@ -7,21 +7,23 @@ import java.util.Objects;
 public class Card {
     private static final int ACE = 11;
     private final CardSymbol symbol;
-    private int num;
+    private int cardNumber;
 
-    public Card(CardSymbol symbol, int num) {
+    public Card(CardSymbol symbol, int cardNumber) {
         this.symbol = symbol;
-        this.num = num;
-    }
-    public boolean isAce() {
-        return this.symbol.equals(CardSymbol.SPADE) && this.num==1;
+        this.cardNumber = cardNumber;
     }
 
-    public void changeNum() {
-        this.num = ACE;
+    public boolean isAce() {
+        return this.symbol.equals(CardSymbol.SPADE) && this.cardNumber==1;
     }
+
+    public void changeAceNumber() {
+        this.cardNumber = ACE;
+    }
+
     public CardDto returnCardDto() {
-        return new CardDto(num, symbol);
+        return new CardDto(cardNumber, symbol);
     }
 
     @Override
@@ -29,16 +31,16 @@ public class Card {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Card card = (Card) o;
-        return num == card.num && symbol == card.symbol;
+        return cardNumber == card.cardNumber && symbol == card.symbol;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(symbol, num);
+        return Objects.hash(symbol, cardNumber);
     }
 
     @Override
     public String toString() {
-        return num + symbol.getName();
+        return cardNumber + symbol.getName();
     }
 }

@@ -13,14 +13,17 @@ public class InputView {
     private static final int MAX_PLAYER_NUMBER = 7;
     private static final int MIN_PLAYER_NUMBER = 1;
     private static BufferedReader bufferedReader;
+    private static StringTokenizer stringTokenizer;
+
     public List<String> getInputPlayer() throws IOException {
         System.out.println("게임에 참여할 사람의 이름을 입력하세요.(쉼표 기준으로 분리)");
         List<String> playerNames;
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine(), ",");
+        stringTokenizer = new StringTokenizer(bufferedReader.readLine(), ",");
+
         while ((playerNames = makeNames(stringTokenizer))==null) {
             stringTokenizer = new StringTokenizer(bufferedReader.readLine(),",");
-        };
+        }
         return playerNames;
     }
 

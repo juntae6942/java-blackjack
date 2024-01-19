@@ -1,6 +1,5 @@
 package blackjack.view;
 
-import blackjack.domain.Card;
 import blackjack.dto.CardDto;
 import blackjack.dto.DealerDto;
 import blackjack.dto.PlayerDto;
@@ -8,19 +7,19 @@ import blackjack.dto.PlayerDto;
 import java.util.List;
 
 public class OutputView {
+
     public void printState(List<PlayerDto> playerDtos) {
         for (PlayerDto playerDto : playerDtos) {
             System.out.println(playerDto);
         }
     }
+
     public void printState(PlayerDto playerDto) {
         System.out.println(playerDto);
     }
+
     public void printState(DealerDto dealerDto) {
-        System.out.println(dealerDto);
-    }
-    public void printDealerReceive() {
-        System.out.println("딜러는 16이하라 한장의 카드를 더 받았습니다.");
+        System.out.println(dealerDto.firstCardInfo());
     }
 
     public void printGameResult(DealerDto dealerDto, List<PlayerDto> playerDtos, String result) {
@@ -34,7 +33,8 @@ public class OutputView {
 
     public void dealerResult(DealerDto dealerDto) {
         StringBuilder result = new StringBuilder();
-        result.append("딜러").append("카드: ");
+        result.append("딜러")
+                .append("카드: ");
         result = returnResult(dealerDto.getCards(), result);
         result.append(dealerDto.getScore());
         System.out.println(result);
@@ -42,18 +42,19 @@ public class OutputView {
 
     public void playerResult(PlayerDto playerDto) {
         StringBuilder result = new StringBuilder();
-        result.append(playerDto.getName()).append("카드: ");
+        result.append(playerDto.getName())
+                .append("카드: ");
         result = returnResult(playerDto.getCards(), result);
         result.append(playerDto.getScore());
         System.out.println(result);
     }
 
-
     public StringBuilder returnResult(List<CardDto> cards, StringBuilder result) {
         for (CardDto card : cards) {
-            result.append(card.toString()).append(", ");
+            result.append(card.toString())
+                    .append(", ");
         }
-        result = new StringBuilder(result.substring(0, result.length()-2));
+        result = new StringBuilder(result.substring(0, result.length() - 2));
         return result.append(" - 결과: ");
     }
 }

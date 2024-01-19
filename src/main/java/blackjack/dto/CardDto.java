@@ -3,6 +3,7 @@ package blackjack.dto;
 import blackjack.domain.CardSymbol;
 
 public class CardDto {
+
     int num;
     CardSymbol symbol;
 

@@ -16,30 +16,27 @@ public class BlackJackController {
     public void playGame() throws IOException {
          inputView = new InputView();
          outputView = new OutputView();
-        List<String> inputPlayer = inputView.getInputPlayer();
 
-        playGameService = new PlayGameService(inputPlayer);
-        playGameService.gameStart();
+         List<String> inputPlayer = inputView.getInputPlayer();
+         playGameService = new PlayGameService(inputPlayer);
+         playGameService.gameStart();
 
-        DealerDto dealerDto = playGameService.returnDealerState();
-        List<PlayerDto> playerDtos = playGameService.returnPlayerState();
-        outputView.printState(dealerDto);
-        outputView.printState(playerDtos);
-        for (PlayerDto playerDto : playerDtos) {
+         DealerDto dealerDto = playGameService.returnDealerState();
+         List<PlayerDto> playerDtos = playGameService.returnPlayerState();
+         outputView.printState(dealerDto);
+         outputView.printState(playerDtos);
+
+         for (PlayerDto playerDto : playerDtos) {
             repeatGame(playerDto);
-        }
-        if(playGameService.checkDealerCards()) {
-            outputView.printDealerReceive();
+         }
+         if(playGameService.checkDealerCards()) {
             playGameService.dealerReceiveCard();
-        }
+         }
+         String result = playGameService.gameResult();
+         dealerDto = playGameService.returnDealerState();
+         playerDtos = playGameService.returnPlayerState();
 
-        String result = playGameService.gameResult();
-
-        dealerDto = playGameService.returnDealerState();
-        playerDtos = playGameService.returnPlayerState();
-
-        outputView.printGameResult(dealerDto, playerDtos, result);
-
+         outputView.printGameResult(dealerDto, playerDtos, result);
     }
 
     public void repeatGame(PlayerDto playerDto) throws IOException {

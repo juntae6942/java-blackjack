@@ -13,16 +13,16 @@ import java.util.List;
 public class PlayGameService {
 
     private static final int BLACK_JACK = 21;
-
     List<Card> duplicatedCheckCard;
     List<Player> players;
     Dealer dealer;
+
     public PlayGameService(List<String> playersName) {
         players = new ArrayList<>();
         for (String name : playersName) {
             players.add(new Player(name));
         }
-        dealer = new Dealer();
+        dealer = new Dealer("딜러");
         duplicatedCheckCard = new ArrayList<>();
     }
 
@@ -30,28 +30,17 @@ public class PlayGameService {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("딜러와 ");
         for (Player player : players) {
-            stringBuilder.append(player.returnPlayer().getName())
-                    .append(",");
+            stringBuilder.append(player.returnPlayerDto().getName())
+                    .append(", ");
         }
-        String result = stringBuilder.substring(0, stringBuilder.length() - 1);
+
+        String result = stringBuilder.substring(0, stringBuilder.length() - 2);
         result += "에게 2장을 나누었습니다.";
         firstReceiveCard(dealer);
         for (Player player : players) {
             firstReceiveCard(player);
         }
-    }
-
-    public void repeatGame(PlayerDto playerDto) {
-        for (Player player : players) {
-            if(player.nameEqual(playerDto)) {
-                receiveCard(player);
-                return;
-            }
-        }
-    }
-    private void firstReceiveCard(Dealer dealer) {
-        dealer.addCard(generateCard());
-        dealer.addCard(generateCard());
+        System.out.println(result);
     }
 
     private void firstReceiveCard(Player player) {
@@ -59,18 +48,39 @@ public class PlayGameService {
         player.addCard(generateCard());
     }
 
-    public void dealerReceiveCard() {
-        dealer.addCard(generateCard());
+    public void repeatGame(PlayerDto playerDto) {
+        for (Player player : players) {
+            cardGiveToPlayer(player, playerDto);
+        }
     }
 
-    public void receiveCard(Player player) {
+    private void cardGiveToPlayer(Player player, PlayerDto playerDto) {
+        if(player.nameEqual(playerDto)) {
+            receiveCard(player);
+        }
+    }
+
+    private void receiveCard(Player player) {
         player.addCard(generateCard());
     }
 
-    public Card generateCard() {
+    public void dealerReceiveCard() {
+        System.out.println("딜러는 16이하라 한장의 카드를 더 받았습니다.");
+        dealer.addCard(generateCard());
+    }
+
+    public boolean checkDealerCards() {
+        if(dealer.containsAce() && dealer.aceIsCanChange()) {
+            dealer.changeCard();
+        }
+        return dealer.scoreIsLowerThen16();
+    }
+
+    private Card generateCard() {
         CardSymbol cardSymbol = CardSymbol.randomSymbol();
         int value = CardSymbol.randomValue();
         Card card = new Card(cardSymbol, value);
+
         if (duplicatedCard(card)) {
             duplicatedCheckCard.add(card);
             return card;
@@ -78,16 +88,18 @@ public class PlayGameService {
         return generateCard();
     }
 
-    public boolean duplicatedCard(Card card) {
+    private boolean duplicatedCard(Card card) {
         return !duplicatedCheckCard.contains(card);
     }
+
     public DealerDto returnDealerState() {
         return dealer.returnDealerDto();
     }
+
     public List<PlayerDto> returnPlayerState() {
         List<PlayerDto> playersDto = new ArrayList<>();
         for (Player player : players) {
-            playersDto.add(player.returnPlayer());
+            playersDto.add(player.returnPlayerDto());
         }
         return playersDto;
     }
@@ -96,46 +108,51 @@ public class PlayGameService {
         int dealerScore = dealer.returnDealerDto().getScore();
         int win = 0;
         int lose = 0;
+        Result result = new Result(win, lose);
         StringBuilder stringBuilder = new StringBuilder();
         for (Player player : players) {
             checkPlayerCards(player);
-            PlayerDto playerDto = player.returnPlayer();
+            PlayerDto playerDto = player.returnPlayerDto();
             stringBuilder.append(playerDto.getName()).append(": ");
-            if(playerDto.getScore() > 21 && dealerScore <= 21) {
-                win++;
-                stringBuilder.append("패\n");
-                continue;
-            } else if (playerDto.getScore() <= 21 && dealerScore > 21) {
-                lose++;
-                stringBuilder.append("승\n");
-                continue;
-            }
-            if((playerDto.getScore() > 21 && dealerScore > 21) || playerDto.getScore() == dealerScore) {
-                stringBuilder.append("무\n");
-                continue;
-            }
-            if(dealerScore-BLACK_JACK > playerDto.getScore()-BLACK_JACK) {
-                win++;
-                stringBuilder.append("패\n");
-            } else if(dealerScore-BLACK_JACK < playerDto.getScore()-BLACK_JACK){
-                lose++;
-                stringBuilder.append("승\n");
-            }
+            decideTheGame(playerDto, dealerScore, stringBuilder, result);
         }
-        return "딜러: "+win+"승 "+lose+"패\n"+stringBuilder;
+        return "딜러: "+ result.win +"승 "+ result.lose +"패\n"+stringBuilder;
     }
 
-    public void checkPlayerCards(Player player) {
+    private void decideTheGame(PlayerDto playerDto, int dealerScore ,StringBuilder stringBuilder, Result result) {
+        if(playerDto.getScore() > 21 && dealerScore <= 21) {
+            result.win++;
+            stringBuilder.append("패\n");
+            return;
+        } if (playerDto.getScore() <= 21 && dealerScore > 21) {
+            result.lose++;
+            stringBuilder.append("승\n");
+            return;
+        } if(dealerScore-BLACK_JACK > playerDto.getScore()-BLACK_JACK) {
+            result.win++;
+            stringBuilder.append("패\n");
+            return;
+        } if(dealerScore-BLACK_JACK < playerDto.getScore()-BLACK_JACK){
+            result.lose++;
+            stringBuilder.append("승\n");
+            return;
+        }
+        stringBuilder.append("무\n");
+    }
+
+    private static class Result {
+        public int win;
+        public int lose;
+
+        public Result(int win, int lose) {
+            this.win = win;
+            this.lose = lose;
+        }
+    }
+
+    private void checkPlayerCards(Player player) {
         if(player.containsAce() && player.aceIsCanChange()) {
-            player.changeCard();
+            player.changeAceCard();
         }
     }
-    public boolean checkDealerCards() {
-        if(dealer.containsAce() && dealer.aceIsCanChange()) {
-            dealer.changeCard();
-        }
-        return dealer.scoreIsLowerThen16();
-    }
-    // 딜러의 카드를 확인한다. 합이 16이하면, 한 장 더 받는다. 근데 Ace를 들고 있다면?
-    // Ace의 유무를 파악 가지고 있으면 일단 11로 바꾼다. 그 다음 16이하인지 파악
 }

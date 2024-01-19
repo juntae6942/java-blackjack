@@ -9,7 +9,7 @@ public class PlayerDto {
     private final String name;
     private final List<Card> cards;
 
-    private int score;
+    private final int score;
 
     public String getName() {
         return name;

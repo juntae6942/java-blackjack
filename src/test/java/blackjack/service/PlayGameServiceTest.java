@@ -1,84 +1,67 @@
 package blackjack.service;
 
-import blackjack.domain.Card;
-import blackjack.domain.CardSymbol;
-import blackjack.domain.Dealer;
-import blackjack.domain.Player;
+import blackjack.dto.DealerDto;
 import blackjack.dto.PlayerDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayGameServiceTest {
 
+    private PlayGameService playGameService;
+
     @Test
     void gameStart() {
+        //given
+        playGameService = new PlayGameService(Arrays.asList("pobi","crong","lusy"));
+        //when
+        playGameService.gameStart();
+        List<PlayerDto> playerDtos = playGameService.returnPlayerState();
+
+        PlayerDto playerDto1 = playerDtos.get(0);
+        PlayerDto playerDto2 = playerDtos.get(1);
+        PlayerDto playerDto3 = playerDtos.get(2);
+        //then
+        assertThat(playerDto1.getCards().size()).isEqualTo(2);
+        assertThat(playerDto2.getCards().size()).isEqualTo(2);
+        assertThat(playerDto3.getCards().size()).isEqualTo(2);
     }
 
     @Test
     void repeatGame() {
-    }
-
-    @Test
-    void dealerReceiveCard() {
-    }
-
-    @Test
-    void receiveCard() {
-    }
-
-    @Test
-    void generateCard() {
-        //given
-        //when
-        //then
-    }
-
-    @Test
-    void duplicatedCard() {
-    }
-
-    @Test
-    void returnDealerState() {
-    }
-
-    @Test
-    void returnPlayerState() {
+        // given
+        playGameService = new PlayGameService(Arrays.asList("pobi","mac","ahpoo"));
+        playGameService.gameStart();
+        List<PlayerDto> playerDtos = playGameService.returnPlayerState();
+        PlayerDto playerDto = playerDtos.get(0);
+        // when
+        playGameService.repeatGame(playerDto);
+        playerDtos = playGameService.returnPlayerState();
+        PlayerDto pobi = playerDtos.get(0);
+        // then
+        assertThat(pobi.getCards().size()).isEqualTo(3);
     }
 
     @Test
     void gameResult() {
-        //given
-        //when
-        //then
-    }
-
-    @Test
-    void checkPlayerCards() {
-        //given
-        PlayGameService playGameService = new PlayGameService(Arrays.asList("pobi","crong","rupy"));
-        Player pobi = playGameService.players.get(0);
-        Player crong = playGameService.players.get(1);
-        Dealer dealer = new Dealer();
-        dealer.addCard(new Card(CardSymbol.CLOVER,3));
-        pobi.addCard(new Card(CardSymbol.SPADE,1));
-        crong.addCard(new Card(CardSymbol.HEART,2));
-        //when
-        playGameService.checkPlayerCards(pobi);
-        PlayerDto playerDto = pobi.returnPlayer();
-        //then
-        Assertions.assertThat(playerDto.getScore()).isEqualTo(11);
-    }
-
-    @Test
-    void checkDealerCards() {
-        Player player = new Player("pobi");
-        player.addCard(new Card(CardSymbol.SPADE,1));
-        player.changeCard();
-        PlayerDto playerDto = player.returnPlayer();
-        Assertions.assertThat(playerDto.getScore()).isEqualTo(11);
+        // given
+        playGameService = new PlayGameService(List.of("pobi"));
+        playGameService.gameStart();
+        // when
+        String result = playGameService.gameResult();
+        DealerDto dealer = playGameService.returnDealerState();
+        PlayerDto pobi = playGameService.returnPlayerState().get(0);
+        // then
+        if(dealer.getScore() > pobi.getScore()) {
+            assertThat(result).isEqualToIgnoringWhitespace("딜러: 1승 0패\npobi: 패");
+        }
+        if(dealer.getScore() < pobi.getScore()) {
+            assertThat(result).isEqualToIgnoringWhitespace("딜러: 0승 1패\npobi: 승");
+        }
     }
 }
