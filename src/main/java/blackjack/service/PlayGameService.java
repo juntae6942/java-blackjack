@@ -67,7 +67,7 @@ public class PlayGameService {
     }
 
     public boolean checkDealerCards() {
-        if(dealer.spadeAceContains() && dealer.aceChangeable()) {
+        if(dealer.spadeAceContains() && dealer.aceIsCanChange()) {
             dealer.changeSpadeAceCard();
         }
         return dealer.scoreIsLowerThenHitLimit();
