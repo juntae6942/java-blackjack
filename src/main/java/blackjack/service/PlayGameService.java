@@ -10,9 +10,9 @@ import java.util.List;
 public class PlayGameService {
 
     private static final int BLACK_JACK = 21;
-    List<Card> duplicatedCheckCard;
-    List<Player> players;
-    Dealer dealer;
+    private final List<Card> duplicatedCheckCard;
+    private final List<Player> players;
+    private final Dealer dealer;
 
     public PlayGameService(List<String> playersName) {
         players = new ArrayList<>();
