@@ -5,7 +5,7 @@ import blackjack.domain.Card;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DealerDto {
+public class DealerDto extends PlayerDto{
     private final List<Card> cards;
     private final int score;
 
@@ -22,6 +22,7 @@ public class DealerDto {
     }
 
     public DealerDto(int score, List<Card> cards) {
+        super(0, "딜러", cards);
         this.cards = cards;
         this.score = score;
     }

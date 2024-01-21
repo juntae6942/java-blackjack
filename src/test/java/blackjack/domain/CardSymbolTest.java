@@ -23,7 +23,7 @@ class CardSymbolTest {
     @Test
     void randomValue() {
         //given
-        int num = CardSymbol.randomValue();
+        int num = CardValue.randomValue();
         boolean check = false;
         //when
         if(num <= 10 && num > 0) {

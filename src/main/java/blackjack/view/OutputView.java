@@ -3,7 +3,6 @@ package blackjack.view;
 import blackjack.dto.CardDto;
 import blackjack.dto.DealerDto;
 import blackjack.dto.PlayerDto;
-
 import java.util.List;
 
 public class OutputView {
@@ -23,20 +22,11 @@ public class OutputView {
     }
 
     public void printGameResult(DealerDto dealerDto, List<PlayerDto> playerDtos, String result) {
-        dealerResult(dealerDto);
+        playerResult(dealerDto);
         for (PlayerDto playerDto : playerDtos) {
             playerResult(playerDto);
         }
         System.out.println("## 최종 승패");
-        System.out.println(result);
-    }
-
-    public void dealerResult(DealerDto dealerDto) {
-        StringBuilder result = new StringBuilder();
-        result.append("딜러")
-                .append("카드: ");
-        result = returnResult(dealerDto.getCards(), result);
-        result.append(dealerDto.getScore());
         System.out.println(result);
     }
 

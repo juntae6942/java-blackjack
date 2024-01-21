@@ -21,8 +21,8 @@ public class BlackJackController {
          playGameService = new PlayGameService(inputPlayer);
          playGameService.gameStart();
 
-         DealerDto dealerDto = playGameService.returnDealerState();
-         List<PlayerDto> playerDtos = playGameService.returnPlayerState();
+         DealerDto dealerDto = playGameService.dealerState();
+         List<PlayerDto> playerDtos = playGameService.playerState();
          outputView.printState(dealerDto);
          outputView.printState(playerDtos);
 
@@ -33,8 +33,8 @@ public class BlackJackController {
             playGameService.dealerReceiveCard();
          }
          String result = playGameService.gameResult();
-         dealerDto = playGameService.returnDealerState();
-         playerDtos = playGameService.returnPlayerState();
+         dealerDto = playGameService.dealerState();
+         playerDtos = playGameService.playerState();
 
          outputView.printGameResult(dealerDto, playerDtos, result);
     }

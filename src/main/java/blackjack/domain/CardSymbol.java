@@ -16,10 +16,6 @@ public enum CardSymbol {
         return symbols[random.nextInt(symbols.length)];
     }
 
-    public static int randomValue() {
-        return random.nextInt(10) + 1;
-    }
-
     public String getName() {
         return name;
     }

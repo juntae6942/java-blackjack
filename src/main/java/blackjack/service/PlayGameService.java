@@ -1,9 +1,6 @@
 package blackjack.service;
 
-import blackjack.domain.Card;
-import blackjack.domain.CardSymbol;
-import blackjack.domain.Dealer;
-import blackjack.domain.Player;
+import blackjack.domain.*;
 import blackjack.dto.DealerDto;
 import blackjack.dto.PlayerDto;
 
@@ -70,15 +67,15 @@ public class PlayGameService {
     }
 
     public boolean checkDealerCards() {
-        if(dealer.containsAce() && dealer.aceIsCanChange()) {
-            dealer.changeCard();
+        if(dealer.spadeAceContains() && dealer.aceChangeable()) {
+            dealer.changeSpadeAceCard();
         }
-        return dealer.scoreIsLowerThen16();
+        return dealer.scoreIsLowerThenHitLimit();
     }
 
     private Card generateCard() {
         CardSymbol cardSymbol = CardSymbol.randomSymbol();
-        int value = CardSymbol.randomValue();
+        int value = CardValue.randomValue();
         Card card = new Card(cardSymbol, value);
 
         if (duplicatedCard(card)) {
@@ -92,11 +89,11 @@ public class PlayGameService {
         return !duplicatedCheckCard.contains(card);
     }
 
-    public DealerDto returnDealerState() {
+    public DealerDto dealerState() {
         return dealer.returnDealerDto();
     }
 
-    public List<PlayerDto> returnPlayerState() {
+    public List<PlayerDto> playerState() {
         List<PlayerDto> playersDto = new ArrayList<>();
         for (Player player : players) {
             playersDto.add(player.returnPlayerDto());
@@ -151,8 +148,8 @@ public class PlayGameService {
     }
 
     private void checkPlayerCards(Player player) {
-        if(player.containsAce() && player.aceIsCanChange()) {
-            player.changeAceCard();
+        if(player.spadeAceContains() && player.aceIsCanChange()) {
+            player.changeSpadeAceCard();
         }
     }
 }

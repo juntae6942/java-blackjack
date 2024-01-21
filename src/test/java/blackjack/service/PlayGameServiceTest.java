@@ -21,7 +21,7 @@ class PlayGameServiceTest {
         playGameService = new PlayGameService(Arrays.asList("pobi","crong","lusy"));
         //when
         playGameService.gameStart();
-        List<PlayerDto> playerDtos = playGameService.returnPlayerState();
+        List<PlayerDto> playerDtos = playGameService.playerState();
 
         PlayerDto playerDto1 = playerDtos.get(0);
         PlayerDto playerDto2 = playerDtos.get(1);
@@ -37,11 +37,11 @@ class PlayGameServiceTest {
         // given
         playGameService = new PlayGameService(Arrays.asList("pobi","mac","ahpoo"));
         playGameService.gameStart();
-        List<PlayerDto> playerDtos = playGameService.returnPlayerState();
+        List<PlayerDto> playerDtos = playGameService.playerState();
         PlayerDto playerDto = playerDtos.get(0);
         // when
         playGameService.repeatGame(playerDto);
-        playerDtos = playGameService.returnPlayerState();
+        playerDtos = playGameService.playerState();
         PlayerDto pobi = playerDtos.get(0);
         // then
         assertThat(pobi.getCards().size()).isEqualTo(3);
@@ -54,8 +54,8 @@ class PlayGameServiceTest {
         playGameService.gameStart();
         // when
         String result = playGameService.gameResult();
-        DealerDto dealer = playGameService.returnDealerState();
-        PlayerDto pobi = playGameService.returnPlayerState().get(0);
+        DealerDto dealer = playGameService.dealerState();
+        PlayerDto pobi = playGameService.playerState().get(0);
         // then
         if(dealer.getScore() > pobi.getScore()) {
             assertThat(result).isEqualToIgnoringWhitespace("딜러: 1승 0패\npobi: 패");

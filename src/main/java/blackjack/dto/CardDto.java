@@ -4,21 +4,21 @@ import blackjack.domain.CardSymbol;
 
 public class CardDto {
 
-    int num;
+    int cardNumber;
     CardSymbol symbol;
 
-    public CardDto(int num, CardSymbol cardSymbol) {
-        this.num = num;
+    public CardDto(int cardNumber, CardSymbol cardSymbol) {
+        this.cardNumber = cardNumber;
         this.symbol = cardSymbol;
     }
 
-    public int getNum() {
-        return num;
+    public int getCardNumber() {
+        return cardNumber;
     }
 
     @Override
     public String toString() {
-        return num + symbol.getName();
+        return cardNumber + symbol.getName();
     }
 
     public CardSymbol getSymbol() {

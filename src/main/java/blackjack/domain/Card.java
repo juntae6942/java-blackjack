@@ -14,7 +14,7 @@ public class Card {
         this.cardNumber = cardNumber;
     }
 
-    public boolean isAce() {
+    public boolean isSpadeAce() {
         return this.symbol.equals(CardSymbol.SPADE) && this.cardNumber==1;
     }
 

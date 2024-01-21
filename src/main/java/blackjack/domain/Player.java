@@ -7,9 +7,10 @@ import java.util.List;
 public class Player {
 
     private static final int CHANGE_LIMIT = 11;
+    // 카드의 합이 11보다 작거나 같으면 Spade Ace를 1 -> 11
     private final String name;
-    private final List<Card> cards;
     private int score;
+    protected final List<Card> cards;
 
     public Player(String name) {
         this.name = name;
@@ -23,7 +24,7 @@ public class Player {
 
     public void addCard(Card card) {
         cards.add(card);
-        score += card.returnCardDto().getNum();
+        score += card.returnCardDto().getCardNumber();
     }
 
     public boolean nameEqual(PlayerDto playerDto) {
@@ -31,7 +32,7 @@ public class Player {
         return name.equals(playerName);
     }
 
-    public boolean containsAce() {
+    public boolean spadeAceContains() {
         return cards.contains(new Card(CardSymbol.SPADE,1));
     }
 
@@ -39,18 +40,18 @@ public class Player {
         return score<=CHANGE_LIMIT;
     }
 
-    public void changeAceCard() {
+    public void changeSpadeAceCard() {
         for (Card card : cards) {
             checkAndChangeCard(card);
         }
     }
 
     private void checkAndChangeCard(Card card) {
-        if(card.isAce()) {
+        if(card.isSpadeAce()) {
             card.changeAceNumber();
             score+=10;
         }
-    }
+    }   // 스페이드 에이스인지 확인하고, 숫자를 1 -> 11로 변경하면서, 점수차 10점을 더한다.
 
     @Override
     public String toString() {

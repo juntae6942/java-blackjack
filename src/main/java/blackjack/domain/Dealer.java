@@ -1,43 +1,32 @@
 package blackjack.domain;
 
+import blackjack.dto.CardDto;
 import blackjack.dto.DealerDto;
+import blackjack.dto.PlayerDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer extends Player{
 
-    private static final int REPEAT_LIMIT = 16;
-    private int score = 0;
-    private final List<Card> cards = new ArrayList<>();
+    private static final int HIT_LIMIT = 16;
+    private int score;
 
     public Dealer(String name) {
         super(name);
+        score = 0;
     }
 
     public void addCard(Card card) {
-        cards.add(card);
-        score+=card.returnCardDto().getNum();
+        super.addCard(card);
+        score+=card.returnCardDto().getCardNumber();
     }
 
     public DealerDto returnDealerDto() {
-        return new DealerDto(score, cards);
+        return new DealerDto(score, super.cards);
     }
 
-    public void changeCard() {
-        for (Card card : cards) {
-            checkIsAceAndChange(card);
-        }
-    }
-
-    private void checkIsAceAndChange(Card card) {
-        if(card.isAce()) {
-            card.changeAceNumber();
-            score+=10;
-        }
-    }
-
-    public boolean scoreIsLowerThen16() {
-        return score<=REPEAT_LIMIT;
+    public boolean scoreIsLowerThenHitLimit() {
+        return score<=HIT_LIMIT;
     }
 }
