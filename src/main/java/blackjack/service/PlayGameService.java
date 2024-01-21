@@ -6,11 +6,13 @@ import blackjack.dto.PlayerDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class PlayGameService {
 
     private static final int BLACK_JACK = 21;
-    private final List<Card> duplicatedCheckCard;
+    private final Set<Card> duplicatedCheckCard;
     private final List<Player> players;
     private final Dealer dealer;
 
@@ -20,7 +22,7 @@ public class PlayGameService {
             players.add(new Player(name));
         }
         dealer = new Dealer("딜러");
-        duplicatedCheckCard = new ArrayList<>();
+        duplicatedCheckCard = new ConcurrentSkipListSet<>();
     }
 
     public void gameStart() {
