@@ -4,7 +4,7 @@ import blackjack.dto.CardDto;
 
 import java.util.Objects;
 
-public class Card {
+public class Card implements Comparable<Card>{
 
     private static final int ACE = 11;
 
@@ -45,5 +45,10 @@ public class Card {
     @Override
     public String toString() {
         return cardNumber + symbol.getName();
+    }
+
+    @Override
+    public int compareTo(Card o) {
+        return this.cardNumber - o.cardNumber;
     }
 }

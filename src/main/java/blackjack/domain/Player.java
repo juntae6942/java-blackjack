@@ -12,7 +12,7 @@ public class Player {
     private final String name;
     protected final List<Card> cards;
 
-    private int score;
+    protected int score;
 
     public Player(String name) {
         this.name = name;
