@@ -5,8 +5,11 @@ import blackjack.dto.CardDto;
 import java.util.Objects;
 
 public class Card {
+
     private static final int ACE = 11;
+
     private final CardSymbol symbol;
+
     private int cardNumber;
 
     public Card(CardSymbol symbol, int cardNumber) {

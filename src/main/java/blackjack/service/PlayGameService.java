@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class PlayGameService {
 
     private static final int BLACK_JACK = 21;
+
     private final Set<Card> duplicatedCheckCard;
     private final List<Player> players;
     private final Dealer dealer;
@@ -29,7 +30,7 @@ public class PlayGameService {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("딜러와 ");
         for (Player player : players) {
-            stringBuilder.append(player.returnPlayerDto().getName())
+            stringBuilder.append(player.playerDto().getName())
                     .append(", ");
         }
 
@@ -98,7 +99,7 @@ public class PlayGameService {
     public List<PlayerDto> playerState() {
         List<PlayerDto> playersDto = new ArrayList<>();
         for (Player player : players) {
-            playersDto.add(player.returnPlayerDto());
+            playersDto.add(player.playerDto());
         }
         return playersDto;
     }
@@ -111,11 +112,17 @@ public class PlayGameService {
         StringBuilder stringBuilder = new StringBuilder();
         for (Player player : players) {
             checkPlayerCards(player);
-            PlayerDto playerDto = player.returnPlayerDto();
+            PlayerDto playerDto = player.playerDto();
             stringBuilder.append(playerDto.getName()).append(": ");
             decideTheGame(playerDto, dealerScore, stringBuilder, result);
         }
         return "딜러: "+ result.win +"승 "+ result.lose +"패\n"+stringBuilder;
+    }
+
+    private void checkPlayerCards(Player player) {
+        if(player.spadeAceContains() && player.aceIsCanChange()) {
+            player.changeSpadeAceCard();
+        }
     }
 
     private void decideTheGame(PlayerDto playerDto, int dealerScore ,StringBuilder stringBuilder, Result result) {
@@ -140,18 +147,13 @@ public class PlayGameService {
     }
 
     private static class Result {
+
         public int win;
         public int lose;
 
         public Result(int win, int lose) {
             this.win = win;
             this.lose = lose;
-        }
-    }
-
-    private void checkPlayerCards(Player player) {
-        if(player.spadeAceContains() && player.aceIsCanChange()) {
-            player.changeSpadeAceCard();
         }
     }
 }

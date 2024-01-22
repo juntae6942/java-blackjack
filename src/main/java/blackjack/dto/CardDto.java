@@ -4,8 +4,8 @@ import blackjack.domain.CardSymbol;
 
 public class CardDto {
 
-    int cardNumber;
-    CardSymbol symbol;
+    private final CardSymbol symbol;
+    private final int cardNumber;
 
     public CardDto(int cardNumber, CardSymbol cardSymbol) {
         this.cardNumber = cardNumber;

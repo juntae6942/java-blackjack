@@ -10,6 +10,7 @@ import java.util.List;
 public class Dealer extends Player{
 
     private static final int HIT_LIMIT = 16;
+
     private int score;
 
     public Dealer(String name) {

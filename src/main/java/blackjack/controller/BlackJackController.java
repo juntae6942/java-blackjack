@@ -10,9 +10,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class BlackJackController {
+
     private InputView inputView;
     private OutputView outputView;
     private PlayGameService playGameService;
+
     public void playGame() throws IOException {
          inputView = new InputView();
          outputView = new OutputView();
@@ -43,6 +45,6 @@ public class BlackJackController {
         while (inputView.askReceiveCard(playerDto)) {
             playGameService.repeatGame(playerDto);
             outputView.printState(playerDto);
-        };
+        }
     }
 }

@@ -12,6 +12,7 @@ public class InputView {
     private static final int NAME_LEN = 5;
     private static final int MAX_PLAYER_NUMBER = 7;
     private static final int MIN_PLAYER_NUMBER = 1;
+
     private static BufferedReader bufferedReader;
     private static StringTokenizer stringTokenizer;
 

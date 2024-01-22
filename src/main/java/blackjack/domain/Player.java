@@ -8,18 +8,16 @@ public class Player {
 
     private static final int CHANGE_LIMIT = 11;
     // 카드의 합이 11보다 작거나 같으면 Spade Ace를 1 -> 11
+
     private final String name;
-    private int score;
     protected final List<Card> cards;
+
+    private int score;
 
     public Player(String name) {
         this.name = name;
         this.cards = new ArrayList<>();
         score = 0;
-    }
-
-    public PlayerDto returnPlayerDto() {
-        return new PlayerDto(score, name, cards);
     }
 
     public void addCard(Card card) {
@@ -60,5 +58,9 @@ public class Player {
             result.append(card.toString()).append(",");
         }
         return result.substring(0, result.length() - 1);
+    }
+
+    public PlayerDto playerDto() {
+        return new PlayerDto(score, name, cards);
     }
 }
