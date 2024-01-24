@@ -1,12 +1,5 @@
 package blackjack.domain;
 
-import blackjack.dto.CardDto;
-import blackjack.dto.DealerDto;
-import blackjack.dto.PlayerDto;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Dealer extends Player{
 
     private static final int HIT_LIMIT = 16;
@@ -15,8 +8,8 @@ public class Dealer extends Player{
         super(name);
     }
 
-    public DealerDto returnDealerDto() {
-        return new DealerDto(super.score, super.cards);
+    public String firstCardInfo() {
+        return "딜러: "+cards.get(0).toString();
     }
 
     public boolean scoreIsLowerThenHitLimit() {

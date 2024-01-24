@@ -2,22 +2,12 @@ package blackjack.dto;
 
 import blackjack.domain.Card;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DealerDto extends PlayerDto{
-
-    private final List<Card> cards;
-    private final int score;
+public class DealerDto extends PlayerDto {
 
     public DealerDto(int score, List<Card> cards) {
-        super(0, "딜러", cards);
-        this.cards = cards;
-        this.score = score;
-    }
-
-    public String firstCardInfo() {
-        return "딜러: "+cards.get(0).toString();
+        super(score, "딜러", cards);
     }
 
     @Override
@@ -28,17 +18,5 @@ public class DealerDto extends PlayerDto{
             result.append(card.toString()).append(", ");
         }
         return result.substring(0,result.length() - 2);
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public List<CardDto> getCards() {
-        List<CardDto> cardsDto = new ArrayList<>();
-        for (Card card : cards) {
-            cardsDto.add(card.returnCardDto());
-        }
-        return cardsDto;
     }
 }

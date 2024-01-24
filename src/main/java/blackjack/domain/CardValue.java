@@ -1,12 +1,23 @@
 package blackjack.domain;
 
-import java.util.Random;
-
 public class CardValue {
 
-    private static final Random random = new Random();
+    private int cardValue;
 
-    public static int randomValue() {
-        return random.nextInt(10) + 1;
+    public CardValue(int cardValue) {
+        this.cardValue = cardValue;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(cardValue);
+    }
+
+    public void setCardValue(int cardValue) {
+        this.cardValue = cardValue;
+    }
+
+    public int getCardValue() {
+        return cardValue;
     }
 }

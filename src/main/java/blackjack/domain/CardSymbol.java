@@ -14,11 +14,6 @@ public enum CardSymbol {
         this.name = name;
     }
 
-    public static CardSymbol randomSymbol() {
-        CardSymbol[] symbols = values();
-        return symbols[random.nextInt(symbols.length)];
-    }
-
     public String getName() {
         return name;
     }

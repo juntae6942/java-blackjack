@@ -1,5 +1,6 @@
 package blackjack.view;
 
+import blackjack.dto.Result;
 import blackjack.dto.CardDto;
 import blackjack.dto.DealerDto;
 import blackjack.dto.PlayerDto;
@@ -7,44 +8,22 @@ import java.util.List;
 
 public class OutputView {
 
-    public void printState(List<PlayerDto> playerDtos) {
-        for (PlayerDto playerDto : playerDtos) {
+    public void printState(List<String> players) {
+        for (String playerDto : players) {
             System.out.println(playerDto);
         }
     }
 
-    public void printState(PlayerDto playerDto) {
-        System.out.println(playerDto);
+    public void printState(String playerState) {
+        System.out.println(playerState);
     }
 
-    public void printState(DealerDto dealerDto) {
-        System.out.println(dealerDto.firstCardInfo());
-    }
-
-    public void printGameResult(DealerDto dealerDto, List<PlayerDto> playerDtos, String result) {
-        playerResult(dealerDto);
-        for (PlayerDto playerDto : playerDtos) {
-            playerResult(playerDto);
+    public void printGameResult(String dealer, List<String> players, Result result) {
+        System.out.println(dealer);
+        for (String playerDto : players) {
+            System.out.println(playerDto);
         }
         System.out.println("## 최종 승패");
         System.out.println(result);
-    }
-
-    public void playerResult(PlayerDto playerDto) {
-        StringBuilder result = new StringBuilder();
-        result.append(playerDto.getName())
-                .append("카드: ");
-        result = returnResult(playerDto.getCards(), result);
-        result.append(playerDto.getScore());
-        System.out.println(result);
-    }
-
-    public StringBuilder returnResult(List<CardDto> cards, StringBuilder result) {
-        for (CardDto card : cards) {
-            result.append(card.toString())
-                    .append(", ");
-        }
-        result = new StringBuilder(result.substring(0, result.length() - 2));
-        return result.append(" - 결과: ");
     }
 }

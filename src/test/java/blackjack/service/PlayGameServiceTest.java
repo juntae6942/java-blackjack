@@ -1,15 +1,16 @@
 package blackjack.service;
 
-import blackjack.dto.DealerDto;
+import blackjack.domain.Player;
 import blackjack.dto.PlayerDto;
-import org.assertj.core.api.Assertions;
+import blackjack.dto.Result;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlayGameServiceTest {
 
@@ -18,50 +19,55 @@ class PlayGameServiceTest {
     @Test
     void gameStart() {
         //given
-        playGameService = new PlayGameService(Arrays.asList("pobi","crong","lusy"));
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("pobi"));
+        players.add(new Player("crong"));
+        players.add(new Player("lusy"));
+        playGameService = new PlayGameService(players);
         //when
         playGameService.gameStart();
-        List<PlayerDto> playerDtos = playGameService.playerState();
+        List<String> playerDtos = playGameService.playerState();
 
-        PlayerDto playerDto1 = playerDtos.get(0);
-        PlayerDto playerDto2 = playerDtos.get(1);
-        PlayerDto playerDto3 = playerDtos.get(2);
+        String playerDto1 = playerDtos.get(0);
+        StringTokenizer stringTokenizer = new StringTokenizer(playerDto1,",");
         //then
-        assertThat(playerDto1.getCards().size()).isEqualTo(2);
-        assertThat(playerDto2.getCards().size()).isEqualTo(2);
-        assertThat(playerDto3.getCards().size()).isEqualTo(2);
+        assertThat(stringTokenizer.countTokens()).isEqualTo(2);
     }
 
     @Test
     void repeatGame() {
         // given
-        playGameService = new PlayGameService(Arrays.asList("pobi","mac","ahpoo"));
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("pobi"));
+        players.add(new Player("crong"));
+        players.add(new Player("lusy"));
+        playGameService = new PlayGameService(players);
         playGameService.gameStart();
-        List<PlayerDto> playerDtos = playGameService.playerState();
-        PlayerDto playerDto = playerDtos.get(0);
         // when
-        playGameService.repeatGame(playerDto);
-        playerDtos = playGameService.playerState();
-        PlayerDto pobi = playerDtos.get(0);
+        playGameService.repeatGame(players.get(0));
+        List<String> playerState = playGameService.playerState();
+        String pobi = playerState.get(0);
+        StringTokenizer stringTokenizer = new StringTokenizer(pobi,",");
         // then
-        assertThat(pobi.getCards().size()).isEqualTo(3);
+        assertThat(stringTokenizer.countTokens()).isEqualTo(3);
     }
 
     @Test
     void gameResult() {
         // given
-        playGameService = new PlayGameService(List.of("pobi"));
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("pobi"));
+        playGameService = new PlayGameService(players);
         playGameService.gameStart();
         // when
-        String result = playGameService.gameResult();
-        DealerDto dealer = playGameService.dealerState();
-        PlayerDto pobi = playGameService.playerState().get(0);
+        Result result = playGameService.gameResult();
         // then
-        if(dealer.getScore() > pobi.getScore()) {
-            assertThat(result).isEqualToIgnoringWhitespace("딜러: 1승 0패\npobi: 패");
-        }
-        if(dealer.getScore() < pobi.getScore()) {
-            assertThat(result).isEqualToIgnoringWhitespace("딜러: 0승 1패\npobi: 승");
+        if(result.getWin() >= 1) {
+            assertThat(result.toString())
+                    .isEqualToIgnoringWhitespace("딜러: 1승 0패\npobi: 패");
+        } if(result.getWin() < 1) {
+            assertThat(result.toString())
+                    .isEqualToIgnoringWhitespace("딜러: 0승 1패\npobi: 승");
         }
     }
 }

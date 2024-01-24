@@ -1,50 +1,78 @@
 package blackjack.controller;
 
-import blackjack.dto.DealerDto;
-import blackjack.dto.PlayerDto;
+import blackjack.domain.Player;
+import blackjack.dto.Result;
 import blackjack.service.PlayGameService;
 import blackjack.view.InputView;
 import blackjack.view.OutputView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BlackJackController {
 
-    private InputView inputView;
-    private OutputView outputView;
+    private final InputView inputView;
+    private final OutputView outputView;
     private PlayGameService playGameService;
 
-    public void playGame() throws IOException {
-         inputView = new InputView();
-         outputView = new OutputView();
-
-         List<String> inputPlayer = inputView.getInputPlayer();
-         playGameService = new PlayGameService(inputPlayer);
-         playGameService.gameStart();
-
-         DealerDto dealerDto = playGameService.dealerState();
-         List<PlayerDto> playerDtos = playGameService.playerState();
-         outputView.printState(dealerDto);
-         outputView.printState(playerDtos);
-
-         for (PlayerDto playerDto : playerDtos) {
-            repeatGame(playerDto);
-         }
-         if(playGameService.checkDealerCards()) {
-            playGameService.dealerReceiveCard();
-         }
-         String result = playGameService.gameResult();
-         dealerDto = playGameService.dealerState();
-         playerDtos = playGameService.playerState();
-
-         outputView.printGameResult(dealerDto, playerDtos, result);
+    public BlackJackController() {
+        this.inputView = new InputView();
+        this.outputView = new OutputView();
     }
 
-    public void repeatGame(PlayerDto playerDto) throws IOException {
-        while (inputView.askReceiveCard(playerDto)) {
-            playGameService.repeatGame(playerDto);
-            outputView.printState(playerDto);
+    public void playGame() throws IOException {
+        List<String> players = playerInput();
+        playGameService.gameStart();
+
+         String dealerState = playGameService.dealerState();
+         List<String> playerStates = playGameService.playerState();
+         printPlayerState(dealerState, playerStates);
+
+         for (String player : players) {
+            repeatGame(player);
+         }
+
+         checkDealerHit();
+         printResult();
+    }
+
+    public void repeatGame(String playerName) throws IOException {
+        while (inputView.askReceiveCard(playerName)) {
+            Player player = new Player(playerName);
+            playGameService.repeatGame(player);
+            player = playGameService.findPlayer(player);
+            outputView.printState(player.toString());
         }
+    }
+
+    public void checkDealerHit() {
+        if(playGameService.checkDealerCards()) {
+            playGameService.dealerReceiveCard();
+        }
+    }
+
+    public void printResult() {
+        Result result = playGameService.gameResult();
+        String dealerResult = playGameService.dealerResult();
+        List<String> playerResults = playGameService.playerResults();
+
+        outputView.printGameResult(dealerResult, playerResults, result);
+    }
+
+    public void printPlayerState(String dealer, List<String> players) {
+        outputView.printState(dealer);
+        outputView.printState(players);
+    }
+
+    public List<String> playerInput() throws IOException {
+        List<String> inputPlayer = inputView.getInputPlayer();
+        List<Player> players = new ArrayList<>();
+        for (String name : inputPlayer) {
+            players.add(new Player(name));
+        }
+        playGameService = new PlayGameService(players);
+        inputView.printStart(inputPlayer);
+        return inputPlayer;
     }
 }

@@ -1,15 +1,13 @@
 package blackjack.dto;
 
 import blackjack.domain.Card;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerDto {
 
-    private final String name;
-    private final List<Card> cards;
+    protected final List<Card> cards;
     private final int score;
+    private final String name;
 
     public PlayerDto(int score, String name, List<Card> cards) {
         this.score = score;
@@ -33,13 +31,5 @@ public class PlayerDto {
 
     public int getScore() {
         return score;
-    }
-
-    public List<CardDto> getCards() {
-        List<CardDto> cardsDto = new ArrayList<>();
-        for (Card card : cards) {
-            cardsDto.add(card.returnCardDto());
-        }
-        return cardsDto;
     }
 }

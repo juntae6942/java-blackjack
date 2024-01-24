@@ -9,24 +9,23 @@ public class Card implements Comparable<Card>{
     private static final int ACE = 11;
 
     private final CardSymbol symbol;
+    private final CardValue cardValue;
 
-    private int cardNumber;
-
-    public Card(CardSymbol symbol, int cardNumber) {
+    public Card(CardSymbol symbol, CardValue cardValue) {
         this.symbol = symbol;
-        this.cardNumber = cardNumber;
+        this.cardValue = cardValue;
     }
 
     public boolean isSpadeAce() {
-        return this.symbol.equals(CardSymbol.SPADE) && this.cardNumber==1;
+        return this.symbol.equals(CardSymbol.SPADE) && this.cardValue.getCardValue()==1;
     }
 
     public void changeAceNumber() {
-        this.cardNumber = ACE;
+        this.cardValue.setCardValue(ACE);
     }
 
-    public CardDto returnCardDto() {
-        return new CardDto(cardNumber, symbol);
+    public CardValue cardValue() {
+        return cardValue;
     }
 
     @Override
@@ -34,21 +33,21 @@ public class Card implements Comparable<Card>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Card card = (Card) o;
-        return cardNumber == card.cardNumber && symbol == card.symbol;
+        return cardValue == card.cardValue && symbol == card.symbol;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(symbol, cardNumber);
+        return Objects.hash(symbol, cardValue);
     }
 
     @Override
     public String toString() {
-        return cardNumber + symbol.getName();
+        return cardValue + symbol.getName();
     }
 
     @Override
     public int compareTo(Card o) {
-        return this.cardNumber - o.cardNumber;
+        return this.cardValue.getCardValue() - o.cardValue.getCardValue();
     }
 }
