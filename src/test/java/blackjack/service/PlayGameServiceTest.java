@@ -1,12 +1,10 @@
 package blackjack.service;
 
 import blackjack.domain.Player;
-import blackjack.dto.PlayerDto;
 import blackjack.dto.Result;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 

@@ -1,7 +1,5 @@
 package blackjack.domain;
 
-import blackjack.dto.CardDto;
-
 import java.util.Objects;
 
 public class Card implements Comparable<Card>{

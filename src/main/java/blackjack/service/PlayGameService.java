@@ -33,6 +33,19 @@ public class PlayGameService {
         player.addCard(generateCard());
     }
 
+    private Card generateCard() {
+        Card card;
+        do {
+            card = CardGenerator.generateCard();
+        } while (duplicatedCard(card));
+        duplicatedCheckCard.add(card);
+        return card;
+    }
+
+    private boolean duplicatedCard(Card card) {
+        return duplicatedCheckCard.contains(card);
+    }
+
     public Player findPlayer(Player playerTarget) {
         Optional<Player> player = players.stream()
                 .filter(cmp -> cmp.equals(playerTarget))
@@ -68,25 +81,12 @@ public class PlayGameService {
         return dealer.scoreIsLowerThenHitLimit();
     }
 
-    private Card generateCard() {
-        Card card;
-        do {
-            card = CardGenerator.generateCard();
-        } while (duplicatedCard(card));
-        duplicatedCheckCard.add(card);
-        return card;
-    }
-
-    private boolean duplicatedCard(Card card) {
-        return duplicatedCheckCard.contains(card);
-    }
-
-    public String dealerState() {
+    public String getDealerState() {
         return dealer.firstCardInfo();
     }
 
-    public String dealerResult() {
-        return dealer.toString() + dealer.gameScore();
+    public String getDealerResult() {
+        return dealer + dealer.gameScore();
     }
 
     public List<String> playerState() {
