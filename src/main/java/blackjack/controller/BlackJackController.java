@@ -14,6 +14,7 @@ public class BlackJackController {
 
     private final InputView inputView;
     private final OutputView outputView;
+
     private PlayGameService playGameService;
 
     public BlackJackController() {
@@ -25,16 +26,17 @@ public class BlackJackController {
         List<String> players = playerInput();
         playGameService.gameStart();
 
-         String dealerState = playGameService.getDealerState();
-         List<String> playerStates = playGameService.playerState();
-         printPlayerState(dealerState, playerStates);
+        String dealerState = playGameService.getDealerState();
+        List<String> playerStates = playGameService.playerState();
+        printPlayerState(dealerState, playerStates);
 
-         for (String player : players) {
+        playGameService.checkBlackJack(players);
+
+        for (String player : players) {
             repeatGame(player);
-         }
-
-         checkDealerHit();
-         printResult();
+        }
+        checkDealerHit();
+        printResult();
     }
 
     public void repeatGame(String playerName) throws IOException {
@@ -55,7 +57,6 @@ public class BlackJackController {
         Result result = playGameService.gameResult();
         String dealerResult = playGameService.getDealerResult();
         List<String> playerResults = playGameService.playerResults();
-
         outputView.printGameResult(dealerResult, playerResults, result);
     }
 
@@ -66,9 +67,12 @@ public class BlackJackController {
 
     public List<String> playerInput() throws IOException {
         List<String> inputPlayer = inputView.getInputPlayer();
+        List<Integer> inputMoney = inputView.getInputMoney(inputPlayer);
         List<Player> players = new ArrayList<>();
-        for (String name : inputPlayer) {
-            players.add(new Player(name));
+        for (int i=0; i<inputPlayer.size(); i++) {
+            String name = inputPlayer.get(i);
+            Integer money = inputMoney.get(i);
+            players.add(new Player(name, money));
         }
         playGameService = new PlayGameService(players);
         inputView.printStart(inputPlayer);

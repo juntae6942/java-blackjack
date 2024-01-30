@@ -10,24 +10,32 @@ import java.util.*;
 public class InputView {
 
     private static final int NAME_LEN = 5;
-
-    private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));;
-    private static StringTokenizer stringTokenizer;
+    private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
     public List<String> getInputPlayer() throws IOException {
         System.out.println("게임에 참여할 사람의 이름을 입력하세요.(쉼표 기준으로 분리)");
         List<String> playerNames;
-        stringTokenizer = new StringTokenizer(bufferedReader.readLine(), ",");
+        StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine(), ",");
+        int count = stringTokenizer.countTokens();
+        OutOfBoundPlayer.valid(count);
+
         while ((playerNames = makeNames(stringTokenizer)) == null) {
             stringTokenizer = new StringTokenizer(bufferedReader.readLine(), ",");
         }
         return playerNames;
     }
 
+    public List<Integer> getInputMoney(List<String> players) throws IOException {
+        List<Integer> money = new ArrayList<>();
+        for (String player : players) {
+            System.out.println(player + "의 배팅 금액은?");
+            money.add(Integer.valueOf(bufferedReader.readLine()));
+        }
+        return money;
+    }
+
     public List<String> makeNames(StringTokenizer stringTokenizer) {
         List<String> names = new ArrayList<>();
-        int count = stringTokenizer.countTokens();
-        OutOfBoundPlayer.valid(count);
         while (stringTokenizer.hasMoreTokens()) {
             String name = stringTokenizer.nextToken().strip();
             if (name.length() > NAME_LEN) {

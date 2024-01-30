@@ -8,18 +8,36 @@ public class Player {
 
     private static final int BLACK_JACK = 21;
     private static final int CHANGE_LIMIT = 11;
+    private static final double BONUS_MONEY_RATE = 1.5;
 
     protected final List<Card> cards;
     private final String name;
 
     protected int score;
+    protected double money;
 
-    public Player(String name) {
+    public Player(String name, double money) {
         this.name = name;
         this.cards = new ArrayList<>();
+        this.money = money;
         score = 0;
     }
 
+    public void bonusMoney(Player player) {
+        money = player.money * BONUS_MONEY_RATE;
+    }
+
+    public void moneyLose(Player player) {
+        money = -player.money;
+    }
+
+    public void moneyGet(Player player) {
+        money = player.money;
+    }
+
+    public boolean isBlackJack() {
+       return score == BLACK_JACK;
+    }
     public static boolean isScoreBiggerThenBlackJack(Player player) {
         return player.score > BLACK_JACK;
     }
@@ -75,7 +93,7 @@ public class Player {
     }
 
     public String gameResult() {
-        return name+": ";
+        return name+": " + money;
     }
 
     @Override

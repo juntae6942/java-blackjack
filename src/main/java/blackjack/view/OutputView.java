@@ -1,9 +1,6 @@
 package blackjack.view;
 
 import blackjack.dto.Result;
-import blackjack.dto.CardDto;
-import blackjack.dto.DealerDto;
-import blackjack.dto.PlayerDto;
 import java.util.List;
 
 public class OutputView {
@@ -23,7 +20,7 @@ public class OutputView {
         for (String playerDto : players) {
             System.out.println(playerDto);
         }
-        System.out.println("## 최종 승패");
+        System.out.println("## 최종 수익");
         System.out.println(result);
     }
 }

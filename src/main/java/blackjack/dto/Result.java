@@ -9,38 +9,28 @@ public class Result {
 
     private final List<String> results;
 
-    private int win;
-    private int lose;
+    private String result;
 
-    public Result(int win, int lose) {
-        this.win = win;
-        this.lose = lose;
+    public Result() {
         results = new ArrayList<>();
+        this.result = "";
     }
 
-    public void increaseWin() {
-        win++;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public void increaseLose() {
-        lose++;
-    }
-
-    public void addPlayer(Player player, String result) {
-        results.add(player.gameResult() + result);
+    public void addPlayer(Player player) {
+        results.add(player.gameResult());
     }
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("딜러: " + win + "승 " + lose + "패\n");
-        for (String s : results) {
-            result.append(s)
+        StringBuilder winLoseResult = new StringBuilder(result+"\n");
+        for (String result : results) {
+            winLoseResult.append(result)
                     .append("\n");
         }
-        return result.toString();
-    }
-
-    public int getWin() {
-        return win;
+        return winLoseResult.toString();
     }
 }

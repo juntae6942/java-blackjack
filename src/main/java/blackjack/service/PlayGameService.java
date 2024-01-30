@@ -17,7 +17,7 @@ public class PlayGameService {
 
     public PlayGameService(List<Player> players) {
         this.players = players;
-        dealer = new Dealer("딜러");
+        dealer = new Dealer("딜러", 0);
         duplicatedCheckCard = new ConcurrentSkipListSet<>();
     }
 
@@ -44,6 +44,20 @@ public class PlayGameService {
 
     private boolean duplicatedCard(Card card) {
         return duplicatedCheckCard.contains(card);
+    }
+
+    public void checkBlackJack(List<String> players) {
+        for (String playerName : players) {
+            Player player = findPlayer(playerName);
+            calculateBetting(player);
+        }
+    }
+
+    private void calculateBetting(Player player) {
+        if (player.isBlackJack() && !dealer.isBlackJack()) {
+            player.bonusMoney(player);
+            dealer.moneyLose(player);
+        }
     }
 
     public Player findPlayer(String name) {
@@ -106,11 +120,13 @@ public class PlayGameService {
     }
 
     public Result gameResult() {
-        Result result = new Result(0, 0);
+        Result result = new Result();
         for (Player player : players) {
             checkPlayerCards(player);
             decideTheGame(player, result);
+            result.addPlayer(player);
         }
+        result.setResult(dealer.gameResult());
         return result;
     }
 
@@ -123,16 +139,13 @@ public class PlayGameService {
 
     private void decideTheGame(Player player, Result result) {
         if(dealerWin(player)) {
-             result.increaseWin();
-             result.addPlayer(player,"패");
+             dealer.moneyGet(player);
+             player.moneyLose(player);
              return;
          }
          if(dealerLose(player)) {
-             result.increaseLose();
-             result.addPlayer(player, "승");
-         }
-         if(dealerDraw(player)) {
-             result.addPlayer(player, "무");
+             dealer.moneyLose(player);
+             player.moneyGet(player);
          }
     }
 
@@ -141,9 +154,8 @@ public class PlayGameService {
     }
 
     private boolean dealerWin(Player player) {
-        if(Player.isScoreBiggerThenBlackJack(player)
-                && (Player.isScoreLowerThenBlackJack(dealer) || Player.isScoreEqualBlackJack(dealer))) {
-            return true;
+        if((Player.isScoreBiggerThenBlackJack(dealer) && Player.isScoreLowerThenBlackJack(player))) {
+            return false;
         }
         return dealer.compareScore(player);
     }
