@@ -42,7 +42,7 @@ class PlayGameServiceTest {
         playGameService = new PlayGameService(players);
         playGameService.gameStart();
         // when
-        playGameService.repeatGame(players.get(0));
+        playGameService.repeatGame("pobi");
         List<String> playerState = playGameService.playerState();
         String pobi = playerState.get(0);
         StringTokenizer stringTokenizer = new StringTokenizer(pobi,",");

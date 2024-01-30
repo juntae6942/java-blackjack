@@ -46,21 +46,21 @@ public class PlayGameService {
         return duplicatedCheckCard.contains(card);
     }
 
-    public Player findPlayer(Player playerTarget) {
+    public Player findPlayer(String name) {
         Optional<Player> player = players.stream()
-                .filter(cmp -> cmp.equals(playerTarget))
+                .filter(cmp -> cmp.nameEqual(name))
                 .findAny();
         return player.orElse(null);
     }
 
-    public void repeatGame(Player playerTarget) {
+    public void repeatGame(String name) {
         for (Player player : players) {
-            cardGiveToPlayer(player, playerTarget);
+            cardGiveToPlayer(player, name);
         }
     }
 
-    private void cardGiveToPlayer(Player player, Player playerTarget) {
-        if(player.nameEqual(playerTarget)) {
+    private void cardGiveToPlayer(Player player, String name) {
+        if(player.nameEqual(name)) {
             receiveCard(player);
         }
     }

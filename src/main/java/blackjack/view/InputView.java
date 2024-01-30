@@ -1,7 +1,6 @@
 package blackjack.view;
 
-import blackjack.domain.Player;
-import blackjack.dto.PlayerDto;
+import blackjack.validate.OutOfBoundPlayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,18 +10,14 @@ import java.util.*;
 public class InputView {
 
     private static final int NAME_LEN = 5;
-    private static final int MAX_PLAYER_NUMBER = 7;
-    private static final int MIN_PLAYER_NUMBER = 1;
 
-    private static BufferedReader bufferedReader;
+    private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));;
     private static StringTokenizer stringTokenizer;
 
     public List<String> getInputPlayer() throws IOException {
         System.out.println("게임에 참여할 사람의 이름을 입력하세요.(쉼표 기준으로 분리)");
         List<String> playerNames;
-        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         stringTokenizer = new StringTokenizer(bufferedReader.readLine(), ",");
-
         while ((playerNames = makeNames(stringTokenizer)) == null) {
             stringTokenizer = new StringTokenizer(bufferedReader.readLine(), ",");
         }
@@ -32,12 +27,7 @@ public class InputView {
     public List<String> makeNames(StringTokenizer stringTokenizer) {
         List<String> names = new ArrayList<>();
         int count = stringTokenizer.countTokens();
-
-        if (count < MIN_PLAYER_NUMBER || count > MAX_PLAYER_NUMBER) {
-            System.out.println("인원이 초과했거나 부족합니다.");
-            return null;
-        }   // player 의 수를 제한
-
+        OutOfBoundPlayer.valid(count);
         while (stringTokenizer.hasMoreTokens()) {
             String name = stringTokenizer.nextToken().strip();
             if (name.length() > NAME_LEN) {
