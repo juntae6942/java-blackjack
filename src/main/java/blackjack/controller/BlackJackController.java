@@ -39,9 +39,8 @@ public class BlackJackController {
 
     public void repeatGame(String playerName) throws IOException {
         while (inputView.askReceiveCard(playerName)) {
-            Player player = new Player(playerName);
-            playGameService.repeatGame(player);
-            player = playGameService.findPlayer(player);
+            playGameService.repeatGame(playerName);
+            Player player = playGameService.findPlayer(playerName);
             outputView.printState(player.toString());
         }
     }

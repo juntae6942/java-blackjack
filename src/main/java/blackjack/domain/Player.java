@@ -45,8 +45,8 @@ public class Player {
         score += card.cardValue().getCardValue();
     }
 
-    public boolean nameEqual(Player player) {
-        return name.equals(player.name);
+    public boolean nameEqual(String name) {
+        return this.name.equals(name);
     }
 
     public boolean contains(Card card) {
