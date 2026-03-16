@@ -76,6 +76,6 @@ public class Main {
     }
 
     private static void printGameResult(OutputView outputView, BlackjackGame game) {
-        outputView.printGameResult(GameResult.from(game.getPlayerProfits(), game.getDealerProfit()));
+        outputView.printGameResult(GameResult.from(game.judgeGameResult()));
     }
 }

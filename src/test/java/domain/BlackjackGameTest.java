@@ -7,6 +7,7 @@ import domain.member.Member;
 import domain.member.Player;
 import domain.member.Players;
 import domain.member.Name;
+import domain.vo.ProfitResult;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -38,7 +39,8 @@ class BlackjackGameTest {
         players.draw(pobi, new Card("A", "하트"));
 
         pobi.applyBlackjackBonus();
-        Map<Player, Integer> playerProfits = game.getPlayerProfits();
+        ProfitResult profitResult = game.judgeGameResult();
+        Map<Player, Integer> playerProfits = profitResult.getPlayersAmount();
         int playerAmount = playerProfits.get(pobi);
 
         Assertions.assertEquals(0, playerAmount);
@@ -55,7 +57,8 @@ class BlackjackGameTest {
         players.draw(pobi, new Card("A", "하트"));
 
         pobi.applyBlackjackBonus();
-        Map<Player, Integer> playerProfits = game.getPlayerProfits();
+        ProfitResult profitResult = game.judgeGameResult();
+        Map<Player, Integer> playerProfits = profitResult.getPlayersAmount();
         int playerAmount = playerProfits.get(pobi);
 
         Assertions.assertEquals(1500, playerAmount);
@@ -75,8 +78,9 @@ class BlackjackGameTest {
         players.draw(lisa, new Card("A", "클로버"));
 
         lisa.applyBlackjackBonus();
-        int dealerProfit = game.getDealerProfit();
-        Map<Player, Integer> playerProfits = game.getPlayerProfits();
+        ProfitResult profitResult = game.judgeGameResult();
+        int dealerProfit = profitResult.getDealerAmount();
+        Map<Player, Integer> playerProfits = profitResult.getPlayersAmount();
 
         Assertions.assertEquals(-1000, playerProfits.get(pobi));
         Assertions.assertEquals(0, playerProfits.get(lisa));
@@ -93,7 +97,8 @@ class BlackjackGameTest {
         players.draw(pobi, new Card("10","클로버"));
         players.draw(pobi, new Card("6", "하트"));
 
-        Map<Player, Integer> gameResult = game.getPlayerProfits();
+        ProfitResult profitResult = game.judgeGameResult();
+        Map<Player, Integer> gameResult = profitResult.getPlayersAmount();
         int roundResult = gameResult.get(pobi);
 
         Assertions.assertEquals(-1000, roundResult);

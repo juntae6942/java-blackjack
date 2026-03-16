@@ -5,9 +5,9 @@ import domain.member.Player;
 import domain.member.Players;
 import domain.card.Deck;
 import domain.member.Settler;
+import domain.vo.ProfitResult;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class BlackjackGame {
 
@@ -53,11 +53,7 @@ public class BlackjackGame {
         return dealer;
     }
 
-    public Map<Player, Integer> getPlayerProfits() {
-        return settler.getPlayerProfits(dealer, getPlayers());
-    }
-
-    public int getDealerProfit() {
-        return settler.getDealerProfit(dealer, getPlayers());
+    public ProfitResult judgeGameResult() {
+        return settler.getProfits(dealer, players);
     }
 }

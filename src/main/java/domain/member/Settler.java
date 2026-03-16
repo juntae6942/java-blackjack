@@ -1,15 +1,21 @@
 package domain.member;
 
+import domain.vo.ProfitResult;
 import domain.vo.RoundResult;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class Settler {
 
-    public Map<Player, Integer> getPlayerProfits(Dealer dealer, List<Player> players) {
+    public ProfitResult getProfits(Dealer dealer, Players players) {
+        Map<Player, Integer> playerProfits = getPlayerProfits(dealer, players);
+        int dealerProfit = getDealerProfit(playerProfits);
+        return new ProfitResult(dealerProfit, playerProfits);
+    }
+
+    private Map<Player, Integer> getPlayerProfits(Dealer dealer, Players players) {
         return judgeGameResults(dealer, players).entrySet().stream()
                 .collect(Collectors.toMap(
                         Entry::getKey,
@@ -20,14 +26,14 @@ public class Settler {
                 ));
     }
 
-    public int getDealerProfit(Dealer dealer, List<Player> players) {
-        return getPlayerProfits(dealer, players).values().stream()
-                .mapToInt(result -> -result)
+    private int getDealerProfit(Map<Player, Integer> playerProfits) {
+        return playerProfits.values().stream()
+                .mapToInt(profit -> -profit)
                 .sum();
     }
 
-    private Map<Player, RoundResult> judgeGameResults(Dealer dealer, List<Player> players) {
-        return players.stream()
+    private Map<Player, RoundResult> judgeGameResults(Dealer dealer, Players players) {
+        return players.getPlayers().stream()
                 .collect(Collectors.toMap(
                                 player -> player,
                                 player -> RoundResult.judgeAgainst(
