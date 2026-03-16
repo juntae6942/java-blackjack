@@ -42,6 +42,10 @@ public class Hand {
         return calculateTotalValue() == BLACKJACK;
     }
 
+    public boolean isBiggerThan(Hand hand) {
+        return this.calculateTotalValue() > hand.calculateTotalValue();
+    }
+
     private boolean hasAce() {
         return cards.stream()
                 .anyMatch(Card::isAce);

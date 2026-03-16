@@ -35,6 +35,10 @@ public class Member {
         return hand.calculateTotalValue();
     }
 
+    public boolean handIsBiggerThan(Member member) {
+        return this.hand.isBiggerThan(member.hand);
+    }
+
     public List<Card> handCards() {
         return hand.getCards();
     }

@@ -28,7 +28,7 @@ public class Dealer {
     }
 
     public boolean isBiggerThan(Player player) {
-        return this.member.handValue() > player.handValue();
+        return this.member.handIsBiggerThan(player.getMember());
     }
 
     public boolean hasBust() {
@@ -49,5 +49,9 @@ public class Dealer {
 
     public String getName() {
         return member.getName();
+    }
+
+    public Member getMember() {
+        return member;
     }
 }

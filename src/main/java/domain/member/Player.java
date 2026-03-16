@@ -41,7 +41,7 @@ public class Player {
     }
 
     public boolean isBiggerThan(Dealer dealer) {
-        return this.member.handValue() > dealer.handValue();
+        return this.member.handIsBiggerThan(dealer.getMember());
     }
 
     public List<Card> handCards() {
@@ -54,5 +54,9 @@ public class Player {
 
     public String getName() {
         return member.getName();
+    }
+
+    public Member getMember() {
+        return member;
     }
 }
