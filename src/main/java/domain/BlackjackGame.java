@@ -42,9 +42,7 @@ public class BlackjackGame {
     }
 
     public void applyBlackjackBonus() {
-        getPlayers().stream()
-                .filter(Player::hasBlackjack)
-                .forEach(Player::applyBlackjackBonus);
+        players.applyBonus();
     }
 
     public List<Player> getPlayers() {

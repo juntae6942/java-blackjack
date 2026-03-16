@@ -24,4 +24,10 @@ public class Players {
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
     }
+
+    public void applyBonus() {
+        players.stream()
+                .filter(Player::hasBlackjack)
+                .forEach(Player::applyBlackjackBonus);
+    }
 }
